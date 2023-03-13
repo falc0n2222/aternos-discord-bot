@@ -16,7 +16,7 @@ To input your Aternos username and password head over to line 14 and put your us
 
 After this is done go into cmd and type
 
-"pip install python-aternos" then "pip install discord" without the "" ofc.
+"pip install python-aternos" then "pip install discord" and "pip install asyncio" without the "" ofc.
 
 ## How to change Prefix ##
 You can change the prefix by going to line 13 and looking for this line

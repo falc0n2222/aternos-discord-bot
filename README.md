@@ -24,9 +24,9 @@ You can change the prefix by going to line 13 and looking for this line
 
 ## Commands list ##
 
-"start" Pretty self explanatory
-"stop" Pretty self explanatory
-"info" Shows information about your server.
+"start" Pretty self explanatory\n
+"stop" Pretty self explanatory\n
+"info" Shows information about your server.\n
 "whitelist" Adds someone to the whitelist. Usage: <server whitelist username>
 "whitelist-remove" Removes someone from the whitelist. Usage: <server whitelist-remove username>
 "whitelisted" Shows people that are whitelisted.

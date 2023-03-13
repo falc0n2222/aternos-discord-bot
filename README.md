@@ -1,3 +1,5 @@
+## BE AWARE THAT PERMISSIONS ARE NOT SET-UP ANYONE WILL BE ABLE TO USE THE COMMANDS AND DO HARM. THIS IS TO SEMI-PREVENT THAT THIS IS USED IN A CLOSED ENVIROMENT LIKE A PRIVATE SERVER. ##
+
 ## THIS BREAKS ATERNOS'S TOS, USE AT YOUR OWN RISK ##
 
 # ATERNOS DISCORD BOT
@@ -15,8 +17,6 @@ To input your Aternos username and password head over to line 14 and put your us
 After this is done go into cmd and type
 
 "pip install python-aternos" then "pip install discord" without the "" ofc.
-
-## BE AWARE THAT PERMISSIONS ARE NOT SET-UP ANYONE WILL BE ABLE TO USE THE COMMANDS AND DO HARM. THIS IS TO SEMI-PREVENT THAT THIS IS USED IN A NON-CLOSED ENVIROMENT LIKE A PRIVATE SERVER. ##
 
 ## How to change Prefix ##
 You can change the prefix by going to line 13 and looking for this line

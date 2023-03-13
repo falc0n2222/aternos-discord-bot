@@ -27,13 +27,13 @@ You can change the prefix by going to line 13 and looking for this line
 "start" Pretty self explanatory.
 "stop" Pretty self explanatory.
 "info" Shows information about your server. 
-"whitelist" Adds someone to the whitelist. Usage: <server whitelist username> 
-"whitelist-remove" Removes someone from the whitelist. Usage: <server whitelist-remove username> 
+"whitelist" Adds someone to the whitelist. Usage: server whitelist username
+"whitelist-remove" Removes someone from the whitelist. Usage: server whitelist-remove username
 "whitelisted" Shows people that are whitelisted. 
-"ipban" IP ban's a specific IP. Usage: <server ipban put.an.ip.address.here> (MUST BE A IP AND NOT A USERNAME!!!).
-"unbanip" Unban's a specific IP. Usage: <server unbanip put.an.ip.address.here>.
-"ban" Bans a specific player. Usage: <server ban username>.
-"unban" Unban's a specific IP. Usage: <server unban username>.
+"ipban" IP ban's a specific IP. Usage: server ipban put.an.ip.address.here (MUST BE A IP AND NOT A USERNAME!!!).
+"unbanip" Unban's a specific IP. Usage: server unbanip put.an.ip.address.here.
+"ban" Bans a specific player. Usage: server ban username.
+"unban" Unban's a specific IP. Usage: server unban username.
 "bans" Show's the ban list. 
 
 This was written in like a day and a half. So excuse the horrible code & bad documentation.

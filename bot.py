@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import os
 import time
+import asyncio
 from python_aternos import Client, Lists
 
 CHANNELID = 123456789 # CHANNELID.

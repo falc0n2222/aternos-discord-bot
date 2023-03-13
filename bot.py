@@ -17,7 +17,7 @@ servers = at.list_servers()
 
 serv = None
 for s in servers:
-    if s.domain == DOMAIN: # Your Aternos Server IP goes here.
+    if s.domain == DOMAIN:
         serv = s
 
 # Important check

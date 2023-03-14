@@ -37,6 +37,12 @@ async def on_ready():
 @client.command()
 async def start(ctx):
     channel = client.get_channel(CHANNELID)
+    
+    serv.fetch()
+    if serv.status == "online":
+        embed = Embed(title="Server is already running", description="The server is already running.", color=0xff0000)
+        await channel.send(embed=embed)
+    
     serv.start()
     embed = Embed(title="Server Start", description="The server is starting. You will get an update when the server is online.", color=0x00ff00)
     await channel.send(embed=embed)
@@ -52,6 +58,12 @@ async def start(ctx):
 @client.command()
 async def stop(ctx):
     channel = client.get_channel(CHANNELID)
+    
+    serv.fetch()
+    if serv.status == "offline":
+        embed = Embed(title="Server is already offline", description="The server is already offline/stopped.", color=0xff0000)
+        await channel.send(embed=embed)
+    
     serv.stop()
     embed = Embed(title="Server Stop", description="The server is stopping. You will get an update when the server is offline.", color=0xff0000)
     await channel.send(embed=embed)

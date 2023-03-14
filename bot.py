@@ -5,15 +5,15 @@ import time
 import asyncio
 from python_aternos import Client, Lists
 
-# START OF CONFIG (CHANGE THESE VALUES ONLY)
+# START OF CONFIG (CHANGE THESE NEXT VALUES ONLY)
 
 CHANNELID = 123456789 # CHANNELID.
-DOMAIN = 'test123.aternos.me' # Put your domain here.
+DOMAIN = 'test123.aternos.me' # Put your server ip/domain here.
 TOKEN = 'your discord bot token.' # Your discord bot token goes here.
 client = commands.Bot(command_prefix='server ', intents=intents) ## You can change the prefix here
 at = Client.from_credentials('your username', 'your password') # This is where you login with your aternos account (username and password)
 
-# END OF CONFIG
+# END OF CONFIG (DON'T CHANGE ANY OF THE NEXT LINES IF YOU DON'T KNOW WHAT YOU'RE DOING)
 
 intents = discord.Intents.all()
 intents.message_content = True

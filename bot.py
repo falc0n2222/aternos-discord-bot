@@ -149,45 +149,39 @@ async def bans(ctx):
 @client.command()
 async def info(ctx):
     channel = client.get_channel(CHANNELID)
-    servers = at.list_servers()
 
-    serv = None
-    for s in servers:
-        if s.domain == DOMAIN:
-            serv = s
-
-            s.fetch()
+    serv.fetch()
             
-            info = f"{s.address}"
-            status = f"{s.status}"
-            playercount = f"The amount of connected users are: {s.players_count}"
-            ramusage = f"{s.ram}MB"
-            version = f"{s.version}" + ", Software: " + s.software
+    info = f"{serv.address}"
+    status = f"{serv.status}"
+    playercount = f"The amount of connected users are: {serv.players_count}"
+    ramusage = f"{serv.ram}MB"
+    version = f"{serv.version}" + ", Software: " + serv.software
 
-            # Set the color of the embed based on the server's status
-            if s.status == "online":
-                color = 0x00ff00 # Green
-            elif s.status == "offline":
-                color = 0xff0000 # Red
-            elif s.status == "loading":
-                color = 0xffff00 # Yellow
-            elif s.status == "starting":
-                color = 0xffff00 # Yellow
-            elif s.status == "saving":
-                color = 0xffff00 # Yellow
-            elif s.status == "stopping":
-                color = 0xffff00 # Yellow
+    # Set the color of the embed based on the server's status
+    if serv.status == "online":
+        color = 0x00ff00 # Green
+    elif serv.status == "offline":
+        color = 0xff0000 # Red
+    elif serv.status == "loading":
+        color = 0xffff00 # Yellow
+    elif serv.status == "starting":
+        color = 0xffff00 # Yellow
+    elif serv.status == "saving":
+        color = 0xffff00 # Yellow
+    elif serv.status == "stopping":
+        color = 0xffff00 # Yellow
 
-            # Create a new embed object
-            embed = discord.Embed(title="Server Information", color=color)
-            embed.add_field(name="IP & Port", value=info, inline=False)
-            embed.add_field(name="Status", value=status, inline=False)
-            embed.add_field(name="Player Count", value=playercount, inline=False)
-            embed.add_field(name="RAM Available", value=ramusage, inline=False)
-            embed.add_field(name="Version", value=version, inline=False)
+    # Create a new embed object
+    embed = discord.Embed(title="Server Information", color=color)
+    embed.add_field(name="IP & Port", value=info, inline=False)
+    embed.add_field(name="Status", value=status, inline=False)
+    embed.add_field(name="Player Count", value=playercount, inline=False)
+    embed.add_field(name="RAM Available", value=ramusage, inline=False)
+    embed.add_field(name="Version", value=version, inline=False)
 
-            # Send the embed to the channel
-            await channel.send(embed=embed)
+    # Send the embed to the channel
+    await channel.send(embed=embed)
 
 
 client.run(TOKEN)

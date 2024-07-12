@@ -1,49 +1,33 @@
-## BE AWARE THAT PERMISSIONS ARE NOT SET-UP ANYONE WILL BE ABLE TO USE THE COMMANDS AND DO HARM. THIS IS TO SEMI-PREVENT THE USAGE OF THIS BOT IN A PUBLIC GUILD. USE ONLY IN A PRIVATE SERVER!!! ##
-
 ## THIS BREAKS ATERNOS'S TOS, USE AT YOUR OWN RISK ##
 
 # ATERNOS DISCORD BOT
-Ban, Whitelist, Start, Stop, Show information about your Aternos server &amp; etc, all available thru a simple Discord bot.
+Control over your Aternos server all with a simple Discord Bot.
 
-Credits to
-Python-Aternos. // https://pypi.org/project/python-aternos/ // for the API itself.
+The Bot is getting an update so that it works despite Aternos' retarded decisions such as deliberately breaking *most* of the Python-Aternos API. There are only a few commands that still work, so ig that makes the bot worth updating one last time.
 
-## How to use the Bot ##
+*Changelog:*
++ Added Slash Commands
++ Removed useless commands as they no longer work
++ Optimized code
++ Role Permissions added
++ & more
 
-Start off by putting your Channel ID Where specified, put your server address where the "DOMAIN = " part is, put your discord bot token where the "TOKEN = " part is.
+Credits to Python-Aternos (https://pypi.org/project/python-aternos/) for the API itself.
 
-To input your Aternos username and password head over to line 14 and put your username where it says "your username" and your password where it says "your password".
+## Requirements
 
-After this is done go into cmd and type
+*The bot uses 4 libraries: Discord, Asyncio, & Python-Aternos so make sure you have them installed via pip.*
 
-"pip install python-aternos" then "pip install discord" and "pip install asyncio" without the "" ofc.
+## Commands list
 
-## How to change Prefix ##
-You can change the prefix by going to line 13 and looking for this line
-"command_prefix='server '" from here change "server" to your new desired prefix.
+/start Pretty self explanatory.
 
-## Commands list ##
+/stop Pretty self explanatory.
 
-"start" Pretty self explanatory.
+/info Shows information about your server. 
 
-"stop" Pretty self explanatory.
+/whitelisted Shows people that are whitelisted. 
 
-"info" Shows information about your server. 
+/bans Show's the ban list. 
 
-"whitelist" Adds someone to the whitelist. Usage: server whitelist username
-
-"whitelist-remove" Removes someone from the whitelist. Usage: server whitelist-remove username
-
-"whitelisted" Shows people that are whitelisted. 
-
-"ipban" IP ban's a specific IP. Usage: server ipban put.an.ip.address.here (MUST BE A IP AND NOT A USERNAME!!!).
-
-"unbanip" Unban's a specific IP. Usage: server unbanip put.an.ip.address.here.
-
-"ban" Bans a specific player. Usage: server ban username.
-
-"unban" Unban's a specific IP. Usage: server unban username.
-
-"bans" Show's the ban list. 
-
-This was written in like a day and a half. So excuse the horrible code & bad documentation.
+The update was written in like an hour, so it might have some bugs (i.e. Not work sometimes)

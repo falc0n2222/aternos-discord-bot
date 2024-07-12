@@ -30,4 +30,4 @@ Credits to Python-Aternos (https://pypi.org/project/python-aternos/) for the API
 
 /bans Show's the ban list. 
 
-The update was written in like an hour, so it might have some bugs (i.e. Not work sometimes)
+The update was written in like an hour, so it might have some bugs.

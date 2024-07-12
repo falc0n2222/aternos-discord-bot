@@ -1,176 +1,163 @@
+# BOT MADE BY FALCON
+
 import discord
+from discord import app_commands
 from discord.ext import commands
 import os
-import time
 import asyncio
 from python_aternos import Client, Lists
 
+atclient = Client()
+aternos = atclient.account
+
 # START OF CONFIG (CHANGE THESE NEXT VALUES ONLY)
 
-CHANNELID = 123456789 # CHANNELID.
-DOMAIN = 'test123.aternos.me' # Put your server ip/domain here.
-TOKEN = 'your discord bot token.' # Your discord bot token goes here.
-client = commands.Bot(command_prefix='server ', intents=intents) ## You can change the prefix here
-at = Client.from_credentials('your username', 'your password') # This is where you login with your aternos account (username and password)
+GUILDID = 1255581836738826242  # YOUR GUILD ID
+PERMISSION = 1261299621087678555 # ROLE ID FOR PERMISSIONS
+TOKEN = 'discord bot token'  # Your discord bot token goes here.
+atclient.login('username', 'password')  # This is where you login with your aternos account (username and password)
 
 # END OF CONFIG (DON'T CHANGE ANY OF THE NEXT LINES IF YOU DON'T KNOW WHAT YOU'RE DOING)
 
-intents = discord.Intents.all()
-intents.message_content = True
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
 
-servers = at.list_servers()
+servs = aternos.list_servers()
+serv = servs[0]
 
-serv = None
-for s in servers:
-    if s.domain == DOMAIN:
-        serv = s
-
-# Important check
+# Check for any servers
 if serv is None:
-    print('The specified server was not found!') # If you didn't specify a correct Aternos Server IP.
+    print('No servers found!')
     exit()
+
+# Error Handling
+@tree.error
+async def on_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
+    if isinstance(error, discord.app_commands.MissingRole):
+        await interaction.response.send_message("You don't have permission to use this command!", ephemeral=True)
+    else:
+        await interaction.response.send_message("An error occurred: {}".format(error), ephemeral=True)
+
 
 @client.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    await tree.sync(guild=discord.Object(id=GUILDID))
+    print("Ready!")
 
-@client.command()
-async def start(ctx):
-    channel = client.get_channel(CHANNELID)
-    
+
+@tree.command(
+    name="start",
+    description="Start the server",
+    guild=discord.Object(id=GUILDID)
+)
+@discord.app_commands.checks.has_role(PERMISSION)
+async def start(interaction: discord.Interaction):
+
+    # Fetch the current server status
     serv.fetch()
     if serv.status == "online":
-        embed = Embed(title="Server is already running", description="The server is already running.", color=0xff0000)
-        await channel.send(embed=embed)
-    
+        embed = discord.Embed(title="Server is already running", description="The server is already running.", color=0xff0000)
+        await interaction.response.send_message(embed=embed)
+        return
+
+    # Start if not already started
     serv.start()
-    embed = Embed(title="Server Start", description="The server is starting. You will get an update when the server is online.", color=0x00ff00)
-    await channel.send(embed=embed)
+    embed = discord.Embed(title="Server Start", description="The server is starting. You will get notified when the server is online.", color=0x00ff00)
+    await interaction.response.defer()  # Defer the response
+    await interaction.followup.send(embed=embed)  # Send the initial response
 
-    while True:
-        await asyncio.sleep(1) # wait for 1 second
-        serv.fetch() # fetch server status
-        if serv.status == "online":
-            embed = Embed(title="Server Started", description="The server has been sucesfully started & you may join.", color=0x00ff00)
-            await channel.send(embed=embed)
-            break # exit loop once server is online
+    while serv.status != "online":
+        await asyncio.sleep(5)  # wait for 5 seconds
+        serv.fetch()  # fetch server status
 
-@client.command()
-async def stop(ctx):
-    channel = client.get_channel(CHANNELID)
-    
+    embed = discord.Embed(title="Server Started", description="The server has been successfully started & you may join.", color=0x00ff00)
+    await interaction.followup.send(embed=embed)  # Send a follow-up response when the server is online
+
+
+@tree.command(
+    name="stop",
+    description="Stops the server",
+    guild=discord.Object(id=GUILDID)
+)
+@discord.app_commands.checks.has_role(PERMISSION)
+async def stop(interaction: discord.Interaction):
     serv.fetch()
     if serv.status == "offline":
-        embed = Embed(title="Server is already offline", description="The server is already offline/stopped.", color=0xff0000)
-        await channel.send(embed=embed)
-    
+        embed = discord.Embed(title="Server is already offline", description="The server is already offline/stopped.", color=0xff0000)
+        await interaction.response.send_message(embed=embed)
+        return
+
     serv.stop()
-    embed = Embed(title="Server Stop", description="The server is stopping. You will get an update when the server is offline.", color=0xff0000)
-    await channel.send(embed=embed)
+    embed = discord.Embed(title="Server Stop", description="The server is stopping. You will get notified when the server is offline.", color=0xff0000)
+    await interaction.response.defer()  # Defer the response
+    await interaction.followup.send(embed=embed)  # Send the initial response
 
-    while True:
-        await asyncio.sleep(1) # wait for 1 second
-        serv.fetch() # fetch server status
-        if serv.status == "offline":
-            embed = Embed(title="Server Stopped", description="The server has been sucesfully stopped.", color=0x00ff00)
-            await channel.send(embed=embed)
-            break # exit loop once server is online
+    while serv.status != "offline":
+        await asyncio.sleep(5)  # wait for 10 seconds
+        serv.fetch()  # fetch server status
 
-@client.command()
-async def whitelist(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    whitelist = serv.players(Lists.whl)
-    whitelist.add({arg1})
-    embed = Embed(title="Whitelist", description=f"The user {arg1} has been successfully whitelisted.", color=0x00ff00)
-    await channel.send(embed)
-
-@client.command()
-async def whitelist_remove(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    whitelist = serv.players(Lists.whl)
-    whitelist.remove({arg1})
-    embed = Embed(title="Whitelist Removal", description=f"The user {arg1} has been removed from the whitelist.", color=0xff0000)
-    await channel.send(embed=embed)
-
-@client.command()
-async def whitelisted(ctx):
-    channel = client.get_channel(CHANNELID)
+    embed = discord.Embed(title="Server Stopped", description="The server has been successfully stopped.", color=0x00ff00)
+    await interaction.followup.send(embed=embed)
+    
+    
+@tree.command(
+    name="whitelisted",
+    description="Get the list of whitelisted users",
+    guild=discord.Object(id=GUILDID)
+)
+@discord.app_commands.checks.has_role(PERMISSION)
+async def whitelisted(interaction: discord.Interaction):
     whitelist = serv.players(Lists.whl)
     player_list = ", ".join(whitelist.list_players())
-    embed = Embed(title="Whitelisted Players", description=f"The whitelisted people are: {player_list}", color=0xffff00)
-    await channel.send(embed=embed)
+    embed = discord.Embed(title="Whitelisted Players", description=f"The whitelisted users are: {player_list}", color=0xffff00)
 
-@client.command()
-async def ipban(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    banlist = serv.players(Lists.ips)
-    banlist.add({arg1})
-    embed = Embed(title="IP Ban", description=f"The IP {arg1} has been successfully IP-banned. (Please note that an IP is required and not a player's username for an IP Ban)", color=0xff0000)
-    await channel.send(embed=embed)
+    await interaction.response.send_message(embed=embed)
+    
 
-@client.command()
-async def unbanip(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    banlist = serv.players(Lists.ips)
-    banlist.remove({arg1})
-    embed = Embed(title="IP Unban", description=f"The IP {arg1} has been successfully unbanned.", color=0x00ff00)
-    await channel.send(embed=embed)
-
-@client.command()
-async def ban(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    banlist = serv.players(Lists.ban)
-    banlist.add({arg1})
-    embed = Embed(title="Ban", description=f"The user {arg1} has been successfully banned.", color=0xff0000)
-    await channel.send(embed=embed)
-
-@client.command()
-async def unban(ctx, arg1):
-    channel = client.get_channel(CHANNELID)
-    banlist = serv.players(Lists.ban)
-    banlist.remove({arg1})
-    embed = Embed(title="Ban", description=f"The user {arg1} has been successfully unbanned.", color=0xff0000)
-    await channel.send(embed=embed)
-
-@client.command()
-async def bans(ctx):
-    channel = client.get_channel(CHANNELID)
+@tree.command(
+    name="bans",
+    description="Lists all server bans",
+    guild=discord.Object(id=GUILDID)
+)
+@discord.app_commands.checks.has_role(PERMISSION)
+async def bans(interaction: discord.Interaction):
     banlist = serv.players(Lists.ban)
     banlistips = serv.players(Lists.ips)
-    ban_list = ", ".join(banlist.list_players()) # concatenate player list into string
-    ban_listips = ", ".join(banlistips.list_players()) # concatenate player list into string
+    ban_list = ", ".join(banlist.list_players())  # concatenate player list into string
+    ban_listips = ", ".join(banlistips.list_players())  # concatenate player list into string
 
     embed = discord.Embed(title="Banned Users and IPs")
     embed.add_field(name="Banned Users", value=ban_list, inline=False)
     embed.add_field(name="Banned IPs", value=ban_listips, inline=False)
 
-    await channel.send(embed=embed) # Send the embed to the channel
+    await interaction.response.send_message(embed=embed)
+    
 
-@client.command()
-async def info(ctx):
-    channel = client.get_channel(CHANNELID)
-
+@tree.command(
+    name="info",
+    description="Fetches the Server's current Status.",
+    guild=discord.Object(id=GUILDID)
+)
+async def info(interaction: discord.Interaction):
     serv.fetch()
-            
+    
     info = f"{serv.address}"
     status = f"{serv.status}"
-    playercount = f"The amount of connected users are: {serv.players_count}"
+    playercount = f"There are currently {serv.players_count} players online"
     ramusage = f"{serv.ram}MB"
     version = f"{serv.version}" + ", Software: " + serv.software
 
     # Set the color of the embed based on the server's status
-    if serv.status == "online":
-        color = 0x00ff00 # Green
-    elif serv.status == "offline":
-        color = 0xff0000 # Red
-    elif serv.status == "loading":
-        color = 0xffff00 # Yellow
-    elif serv.status == "starting":
-        color = 0xffff00 # Yellow
-    elif serv.status == "saving":
-        color = 0xffff00 # Yellow
-    elif serv.status == "stopping":
-        color = 0xffff00 # Yellow
+    status_colors = {
+        "online": 0x00ff00,
+        "offline": 0xff0000,
+        "loading": 0xffff00,
+        "starting": 0xffff00,
+        "saving": 0xffff00,
+        "stopping": 0xffff00
+    }
+    color = status_colors.get(serv.status, 0x000000)  # Default to black if status is unknown so that we don't get an error or smth
 
     # Create a new embed object
     embed = discord.Embed(title="Server Information", color=color)
@@ -181,7 +168,6 @@ async def info(ctx):
     embed.add_field(name="Version", value=version, inline=False)
 
     # Send the embed to the channel
-    await channel.send(embed=embed)
-
+    await interaction.response.send_message(embed=embed)
 
 client.run(TOKEN)

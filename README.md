@@ -5,7 +5,7 @@ Control over your Aternos server all with a simple Discord Bot.
 
 The Bot is getting an update so that it works despite Aternos' retarded decisions such as deliberately breaking *most* of the Python-Aternos API. There are only a few commands that still work, so ig that makes the bot worth updating one last time.
 
-*Changelog:*
+*12/07/24 Changelog:*
 + Added Slash Commands
 + Removed useless commands as they no longer work
 + Optimized code

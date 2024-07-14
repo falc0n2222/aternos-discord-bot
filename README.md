@@ -1,4 +1,4 @@
-## THIS BREAKS ATERNOS'S TOS, USE AT YOUR OWN RISK ##
+## THIS BREAKS ATERNOS' TOS, USE AT YOUR OWN RISK ##
 
 # ATERNOS DISCORD BOT
 Control over your Aternos server all with a simple Discord Bot.
